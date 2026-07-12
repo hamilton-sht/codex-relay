@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Relay"
+  short_description: "Connect Codex conversations for live agent discussion"
+  default_prompt: "Use $multi-codex-align to send this task to another Codex conversation and coordinate the replies."

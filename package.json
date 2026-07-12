@@ -1,0 +1,25 @@
+{
+  "name": "multi-codex-agent-bridge",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Live GUI and CLI messaging between local Codex conversations.",
+  "bin": {
+    "multi-codex": "src/cli.js",
+    "multi-codex-bridge": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "install:skill": "node scripts/install-skill.mjs",
+    "test": "node --test test/*.test.js",
+    "test:e2e": "node scripts/e2e.js",
+    "check": "node --check src/index.js && node --check src/bridge.js && node --check src/gui-ipc.js && node --check src/cli.js && node --check src/worker.js && node --check scripts/e2e.js && node --check scripts/install-skill.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}
