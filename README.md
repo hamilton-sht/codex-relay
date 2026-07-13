@@ -71,19 +71,21 @@ codex mcp remove multiCodexBridge
 
 ## GUI 实时发送
 
-先把目标 Thread 在独立 Codex App 窗口中打开。目标窗口必须保持打开，且标题应当唯一。
+先使用 Codex App 自带的重命名功能给目标对话设置一个简短、唯一的标题，例如 `MOE`，再把
+该 Thread 放在独立 Codex App 窗口中并保持打开。标题会持久化到 Codex 本地状态，Codex Relay
+每次发送前都会重新读取，因此重命名后无需重启。
 
 查询目标：
 
 ```bash
-multi-codex threads "新的测试"
+multi-codex threads "MOE"
 ```
 
 发送 prompt：
 
 ```bash
 multi-codex gui-send \
-  --target "新的测试" \
+  --target "MOE" \
   --message "请评审这个需求，并列出遗漏的验收条件。"
 ```
 
@@ -104,7 +106,7 @@ multi-codex gui-send \
 安装 MCP 和 Skill 后，可以直接对 Codex 说：
 
 ```text
-使用 $multi-codex-align，通过 GUI 实时投递向“新的测试”发送：
+使用 $multi-codex-align，通过 GUI 实时投递向标题为“MOE”的对话发送：
 请检查当前方案的边界条件，并回复你的结论。
 ```
 
@@ -112,7 +114,7 @@ Codex 会调用 `send_agent_message`，核心参数如下：
 
 ```json
 {
-  "target": "新的测试",
+  "target": "MOE",
   "kind": "question",
   "subject": "方案复核",
   "message": "请检查当前方案的边界条件，并回复你的结论。",
@@ -163,7 +165,7 @@ multi-codex send \
 ## MCP 工具
 
 - `list_codex_threads`：列出本地对话。
-- `register_codex_agent`：将 Thread ID 注册为稳定英文别名。
+- `register_codex_agent`：为标题经常变化的自动化目标注册可选别名。
 - `list_codex_agents`：列出已注册别名。
 - `send_agent_message`：发送普通报告、请求、移交或问题。
 - `report_task_completion`：发送结构化完成报告。
@@ -178,6 +180,7 @@ multi-codex send \
 |---|---|
 | `GUI_OWNER_NOT_FOUND` | 目标 Thread 没有在独立 Codex App 窗口打开；打开后重试 |
 | `GUI_IPC_NOT_FOUND` | Codex App 未运行，或本地 IPC Socket 不存在 |
+| `THREAD_NOT_FOUND` | 没有该标题；在 Codex App 中将目标对话重命名为一个唯一短名称 |
 | `TARGET_AMBIGUOUS` | 多个对话匹配同一标题；使用完整标题或 Thread ID |
 | `SELF_DELIVERY_BLOCKED` | 目标和发送方是同一个 Thread |
 | `TARGET_BUSY_TIMEOUT` | 同一目标已有投递或正在执行其他 Turn |
